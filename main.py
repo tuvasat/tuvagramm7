@@ -1,29 +1,5 @@
-import tuvagramm
-from tuvagramm import alphabet_all
+from general_methods import *
 from difflib import SequenceMatcher
-
-
-PUNCTUATION_MARKS = ':^,«»]•.- \t[!_/)?№*\n;('
-
-
-def get_punctuation_marks(line: str) -> str:
-    res = ''
-    for i in line:
-        if i not in alphabet_all and not i.isalnum():
-            res += i
-    res = ''.join(set(res))
-    return res
-
-
-def line_to_words(line: str) -> list:
-    res = ''
-    for i in line:
-        if i not in PUNCTUATION_MARKS and not i.isdigit():
-            res += i
-        else:
-            res += ' '
-    res = res.split()
-    return res
 
 
 def get_endings(path='sim_words.txt') -> set:
