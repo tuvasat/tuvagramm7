@@ -251,7 +251,7 @@ def get_initial_and_is_change(word: str, endings_all: dict, set_func) -> tuple:
     return word, False
 
 
-def get_punctuation_marks(line: str) -> str:
+def get_letters_in_abc(line: str) -> str:
     res = ''
     for i in line:
         if i not in alphabet_all and not i.isdigit():
@@ -260,19 +260,7 @@ def get_punctuation_marks(line: str) -> str:
     return res
 
 
-def line_to_words(line: str) -> list:
-    punctuation_marks = get_punctuation_marks(line)
-    res = ''
-    for i in line:
-        if i not in punctuation_marks and not i.isdigit():
-            res += i
-        else:
-            res += ' '
-    res = res.split()
-    return res
-
-
-def string_to_words(in_string: str) -> list:
+def get_all_words_from_text(line: str) -> list:
     """
     Функция, которая на входе получает строку,
     которое состоит из букв тувинского (кириллица) алфавита,
@@ -281,13 +269,18 @@ def string_to_words(in_string: str) -> list:
     (выражение которое состоит только из букв тувинского алфавита)
     """
 
-    s = ''
-    for i in in_string:
-        if i in alphabet_all:
-            s = s + i
-        elif i in ' ,.?!@#$%^&*()1234567890_+=\n':
-            s = s + ' '
-    words = []
-    words += s.split()
-    words = list(sorted(set(words)))
-    return words
+    not_in_abc = get_letters_in_abc(line)
+    res = ''
+    for i in line:
+        if i not in not_in_abc and not i.isdigit():
+            res += i
+        else:
+            res += ' '
+    res = res.split()
+    return res
+
+
+def get_unique_words_from_text(text: str) -> list:
+    """
+    """
+    return sorted(list(set(get_all_words_from_text(text))))

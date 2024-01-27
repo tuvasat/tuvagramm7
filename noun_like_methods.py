@@ -116,6 +116,11 @@ def get_initial_and_case(word: str) -> tuple:
     return get_initial_and_is_change(word, case_endings_all, set_case)
 
 
+def is_case(word: str) -> bool:
+    _, res = get_initial_and_is_change(word, case_endings_all, set_case)
+    return res
+
+
 # окончания множественной формы существительных
 endings_plural_form = ['лар', 'лер', 'дар', 'дер',
                        'нар', 'нер', 'тар', 'тер']
@@ -134,6 +139,11 @@ def set_plural(word: str, form=1) -> str:
 
 def get_initial_and_is_plural(word: str) -> tuple:
     return get_initial_and_is_change(word, endings_plural_all, set_plural)
+
+
+def is_plural(word: str) -> bool:
+    _, res = get_initial_and_is_change(word, endings_plural_all, set_plural)
+    return res
 
 
 endings_possessive_1 = ['м', 'м', 'м', 'м', 'ым', 'им', 'ум', 'үм']
@@ -178,5 +188,36 @@ def get_initial_and_possessive(word: str) -> tuple:
                                      set_possessive)
 
 
+def is_possessive(word: str) -> bool:
+    _, res = get_initial_and_is_change(word,
+                                       endings_possessive_all,
+                                       set_possessive)
+    return res
+
+
+def get_initial_words_in_text(text: str) -> dict:
+    def filter_word():
+        pass
+
+    res = dict()
+    from general_methods import get_unique_words_from_text
+#    punctuation_marks = get_punctuation_marks(text)
+    words = get_unique_words_from_text(text.lower())
+    words0 = sorted(list(set(words)))
+    while words0:
+        word0 = words0.pop(0)
+        if len(word0) > 3 and word0 not in ' '.join(res.values()):
+            for word in words0.copy():
+                if word0 in word:
+                    try:
+                        res[word0] + ' ' + word
+                    except:
+                        res[word0] = word
+                    words0.remove(word)
+    return res
+
+
 if __name__ == '__main__':
-    print(get_initial_and_case('кижидиве'))
+    print(is_case('кижиnfg'))
+#    with open('text/text.txt', 'r', encoding='utf-8') as f1:
+#        print(get_words_in_text(' '.join(f1.readlines())))

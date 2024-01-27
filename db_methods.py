@@ -2,6 +2,7 @@
 # https://docs-python.ru/standart-library/modul-sqlite3-python/obekt-connection-modulja-sqlite3/
 import sqlite3
 
+
 class new_db_create():
     def __init__(self):
         # Создаем базу данных

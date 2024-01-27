@@ -9,6 +9,7 @@
 """
 
 from general_methods import vowels, consonants
+import general_methods
 
 
 def get_syllabled_word(word: str) -> str:
@@ -105,6 +106,8 @@ def get_syllabled_word(word: str) -> str:
         res.append(get_syllabled_word0(word0))
     return '-~'.join(res)
 
-
+print(12345)
+print(__name__)
 if __name__ == '__main__':
+    print(12345)
     pass
