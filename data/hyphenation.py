@@ -9,6 +9,7 @@
 """
 
 import json
+import os.path
 from data.general_methods import vowels, consonants
 
 
@@ -134,12 +135,47 @@ def get_syllable_word(word: str) -> str:
     return '-~'.join(res)
 
 
-def set_syllable_template(syllable_word: str, sign='~') -> str:
-    syllable_word_template = sgsg(syllable_word)
+def set_syllable_template(syllable_word: str, sign='~', file_path='data/hyphenation_tamplates0.json') -> str:
+    """
+    Функция принимает слово с мягкими переносами и
+    формирует по нему шаблон расстановки мягких переносов
+    :param syllable_word: слово с мягкими переносами
+    :param sign: знак разделитель, по умолчанию '~'
+    :param file_path: файл сохранения по умолчанию 'data/hyphenation_tamplates0.json'
+    :return: шаблон переноса в строковом виде
+    """
+    h_template = dict()
+    for word_part0 in syllable_word.split('-'):
+        word_part = []
+        for syllable in word_part0.split('~'):
+            if syllable:
+                word_part.append(sgsg(syllable))
 
+        while len(word_part) > 2:
+            if os.path.exists(file_path):
+                with open(file_path, 'r', encoding='utf-8') as f:
+                    h_template = json.loads(f.read())
+            else:
+                h_template = json.dumps(dict())
+                with open(file_path, 'w', encoding='utf-8') as f:
+                    json.dump(h_template, file_path)
 
-    pass
+                with open(file_path, 'r', encoding='utf-8') as f:
+                    h_template = json.loads(f.read())
 
+            new_template = word_part[0] + word_part[1]
+            key = len(word_part[0])
+            try:
+                print(word_part[0])
+                value = ' '.join(sorted(list(set(f'{h_template[f"{len(word_part[0])}"]} {new_template}'.split()))))
+            except:
+                value = new_template
+            print(12345, key, value)
+            print(type(h_template), h_template)
+            h_template[str(key)] = str(value)
 
-if __name__ == '__main__':
-    pass
+            with open(file_path, 'w', encoding='utf-8') as f:
+                json.dump(h_template, f, indent=4)
+
+            word_part.pop(0)
+    return h_template
